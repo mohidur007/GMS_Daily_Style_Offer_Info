@@ -60,20 +60,72 @@ filtered_df = df_raw[
     (df_raw["Inline/Final"].isin(selected_types))
 ]
 
-# 4. Top KPI Summary Cards
-kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+# 4. Top KPI Summary Cards (Button-style Metrics in One Line)
+col1, col2, col3 = st.columns(3)
 
-with kpi1:
-    st.metric("Total Order Quantity", f"{int(filtered_df['Order QTY'].sum()):,}")
-with kpi2:
-    st.metric("Total PO Count", f"{int(filtered_df['Total PO'].sum()):,}")
-with kpi3:
-    st.metric("Total Inspections", f"{len(filtered_df):,}")
-with kpi4:
-    unique_styles = filtered_df["Style Name"].nunique() if "Style Name" in filtered_df else 0
-    st.metric("Active Styles", unique_styles)
+# Calculate Metric Values safely
+total_styles = filtered_df["Style Name"].nunique() if "Style Name" in filtered_df.columns else 0
+total_po = int(filtered_df['Total PO'].sum()) if "Total PO" in filtered_df.columns else 0
+active_styles = filtered_df[filtered_df["Order QTY"] > 0]["Style Name"].nunique() if "Style Name" in filtered_df.columns and "Order QTY" in filtered_df.columns else total_styles
 
-st.divider()
+# Custom CSS for Professional Button/Badge Style
+st.markdown("""
+    <style>
+    .kpi-card {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .kpi-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-color: #0d6efd;
+    }
+    .kpi-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 5px;
+    }
+    .kpi-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1e293b;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Render Button-Style Cards in 1 Row
+with col1:
+    st.markdown(f'''
+        <div class="kpi-card">
+            <div class="kpi-title">Total Style</div>
+            <div class="kpi-value">{total_styles:,}</div>
+        </div>
+    ''', unsafe_allow_html=True)
+
+with col2:
+    st.markdown(f'''
+        <div class="kpi-card">
+            <div class="kpi-title">Total PO</div>
+            <div class="kpi-value">{total_po:,}</div>
+        </div>
+    ''', unsafe_allow_html=True)
+
+with col3:
+    st.markdown(f'''
+        <div class="kpi-card">
+            <div class="kpi-title">Active Styles</div>
+            <div class="kpi-value">{active_styles:,}</div>
+        </div>
+    ''', unsafe_allow_html=True)
+
 
 # 5. Graphical Visualizations
 col_chart1, col_chart2 = st.columns(2)
