@@ -70,7 +70,7 @@ with kpi2:
 with kpi3:
     st.metric("Total Inspections", f"{len(filtered_df):,}")
 with kpi4:
-    unique_styles = filtered_df["Style name"].nunique() if "Style name" in filtered_df else 0
+    unique_styles = filtered_df["Style Name"].nunique() if "Style Name" in filtered_df else 0
     st.metric("Active Styles", unique_styles)
 
 st.divider()
@@ -111,7 +111,7 @@ st.subheader("📋 Raw Inspection Data")
 search_style = st.text_input("🔎 Search by Style Name or PO Number:")
 if search_style:
     filtered_df = filtered_df[
-        filtered_df["Style name"].astype(str).str.contains(search_style, case=False) |
+        filtered_df["Style Name"].astype(str).str.contains(search_style, case=False) |
         filtered_df["PO numbers"].astype(str).str.contains(search_style, case=False)
     ]
 
