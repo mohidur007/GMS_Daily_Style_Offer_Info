@@ -151,17 +151,39 @@ with col3:
     ''', unsafe_allow_html=True)
 
 
+import io
+
 # 5. Detailed Data Table
 st.subheader("📋 Raw Inspection Data")
 
+# Search bar
 search_style = st.text_input("🔎 Search by Style Name or PO Number:")
 if search_style and not filtered_df.empty:
     style_mask = filtered_df["Style Name"].astype(str).str.contains(search_style, case=False) if "Style Name" in filtered_df.columns else False
     po_mask = filtered_df["PO Number"].astype(str).str.contains(search_style, case=False) if "PO Number" in filtered_df.columns else False
     filtered_df = filtered_df[style_mask | po_mask]
 
+# Helper function to convert dataframe to Excel format
+def convert_df_to_excel(df):
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Inspection_Data')
+    return output.getvalue()
+
+# Excel Download Button
+excel_data = convert_df_to_excel(filtered_df)
+
+st.download_button(
+    label="📊 Download as Excel (.xlsx)",
+    data=excel_data,
+    file_name="Inspection_Data.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+)
+
+# Display Table
 st.dataframe(
     filtered_df,
     use_container_width=True,
     hide_index=True
 )
+
