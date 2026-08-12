@@ -70,7 +70,13 @@ col1, col2, col3 = st.columns(3)
 
 total_styles = filtered_df["Style Name"].nunique() if "Style Name" in filtered_df.columns else 0
 total_po = int(filtered_df['Total PO'].sum()) if "Total PO" in filtered_df.columns else 0
-active_styles = filtered_df[filtered_df["Order QTY"] > 0]["Style Name"].nunique() if "Style Name" in filtered_df.columns and "Order QTY" in filtered_df.columns else total_styles
+
+# Count unique styles that have a non-empty Inspector Name (Inspection Running)
+if "Style Name" in filtered_df.columns and "Inspector Name" in filtered_df.columns:
+    active_mask = filtered_df["Inspector Name"].notna() & (filtered_df["Inspector Name"].astype(str).str.strip() != "")
+    active_styles = filtered_df[active_mask]["Style Name"].nunique()
+else:
+    active_styles = 0
 
 # Custom CSS for Professional Button Style
 st.markdown("""
@@ -129,7 +135,6 @@ with col3:
         </div>
     ''', unsafe_allow_html=True)
 
-st.divider()
 
 # 5. Detailed Data Table
 st.subheader("📋 Raw Inspection Data")
