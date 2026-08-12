@@ -9,7 +9,22 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("GMS COMPOSITE Daily Style Offer Information")
+# Custom Gradient Title Styling
+st.markdown("""
+    <style>
+    .gradient-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #4285F4, #9B51E0, #D946EF, #FF4B4B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0px;
+        padding-bottom: 5px;
+    }
+    </style>
+    <h1 class="gradient-title">GMS COMPOSITE Daily Style Offer Information</h1>
+""", unsafe_allow_html=True)
+
 st.caption("Real-time data synced directly with Register Khata")
 
 # 2. Google Sheets Connection
