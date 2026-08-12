@@ -20,7 +20,7 @@ GSHEET_URL = "https://docs.google.com/spreadsheets/d/1KGZmiPoeY1UPe0NPGdz4w7QE4M
 @st.cache_data(ttl=30)  # Re-fetches fresh data every 30 seconds
 def load_data():
     conn = st.connection("gsheets", type=GSheetsConnection)
-    df = conn.read(spreadsheet=GSHEET_URL)
+    df = conn.read(spreadsheet=GSHEET_URL, header=2)
     
     # Ensure numeric columns are properly formatted
     df["Order QTY"] = pd.to_numeric(df["Order QTY"], errors="coerce").fillna(0)
