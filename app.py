@@ -10,8 +10,8 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🧵 Live Garment Production & Inspection Dashboard")
-st.caption("Real-time data synced directly with Google Sheets")
+st.title("GMS COMPOSITE Daily Style Offer Information")
+st.caption("Real-time data synced directly with Register Khata")
 
 # 2. Google Sheets Connection
 # Replace with your actual public Google Sheets link
