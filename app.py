@@ -15,7 +15,7 @@ st.caption("Real-time data synced directly with Google Sheets")
 
 # 2. Google Sheets Connection
 # Replace with your actual public Google Sheets link
-GSHEET_URL = "YOUR_GOOGLE_SHEET_URL_HERE"
+GSHEET_URL = "https://docs.google.com/spreadsheets/d/1KGZmiPoeY1UPe0NPGdz4w7QE4MOlLvQKa6w58giDkW4/edit?usp=drivesdk"
 
 @st.cache_data(ttl=30)  # Re-fetches fresh data every 30 seconds
 def load_data():
